@@ -1,0 +1,52 @@
+{
+  "assets": [
+    {
+      "apiUrl": "https://api.github.com/repos/worasak-tee/LOCAL-AI-CHAT-by-WR-Releases/releases/assets/520760748",
+      "contentType": "application/octet-stream",
+      "createdAt": "2026-08-19T11:30:09Z",
+      "digest": "sha256:36fe32919db1412cdd68388f61adb7286f1ad1a1160f550017ccda67f1b8b5e6",
+      "downloadCount": 0,
+      "id": "RA_kwDOT89Ons4fCi2s",
+      "label": "",
+      "name": "LOCAL-AI-CHAT-by-WR_Portable.exe",
+      "size": 164492039,
+      "state": "uploaded",
+      "updatedAt": "2026-08-19T11:30:18Z",
+      "url": "https://github.com/worasak-tee/LOCAL-AI-CHAT-by-WR-Releases/releases/download/v1.2.0/LOCAL-AI-CHAT-by-WR_Portable.exe"
+    },
+    {
+      "apiUrl": "https://api.github.com/repos/worasak-tee/LOCAL-AI-CHAT-by-WR-Releases/releases/assets/520760749",
+      "contentType": "application/zip",
+      "createdAt": "2026-08-19T11:30:09Z",
+      "digest": "sha256:4b98f6e544b1c992fcd3ab13ca04850eb0fb1116a34991fe07c7a4cfde3d71da",
+      "downloadCount": 0,
+      "id": "RA_kwDOT89Ons4fCi2t",
+      "label": "",
+      "name": "LOCAL-AI-CHAT-by-WR_Update_V1.2.0.zip",
+      "size": 163660952,
+      "state": "uploaded",
+      "updatedAt": "2026-08-19T11:30:16Z",
+      "url": "https://github.com/worasak-tee/LOCAL-AI-CHAT-by-WR-Releases/releases/download/v1.2.0/LOCAL-AI-CHAT-by-WR_Update_V1.2.0.zip"
+    },
+    {
+      "apiUrl": "https://api.github.com/repos/worasak-tee/LOCAL-AI-CHAT-by-WR-Releases/releases/assets/520760747",
+      "contentType": "text/plain; charset=utf-8",
+      "createdAt": "2026-08-19T11:30:09Z",
+      "digest": "sha256:7e59a606b24e9728dbbd93ef55d54a1ef472bd3663d3d05faca8bbc338e64d30",
+      "downloadCount": 0,
+      "id": "RA_kwDOT89Ons4fCi2r",
+      "label": "",
+      "name": "SHA256SUMS.txt",
+      "size": 205,
+      "state": "uploaded",
+      "updatedAt": "2026-08-19T11:30:09Z",
+      "url": "https://github.com/worasak-tee/LOCAL-AI-CHAT-by-WR-Releases/releases/download/v1.2.0/SHA256SUMS.txt"
+    }
+  ],
+  "isDraft": false,
+  "isPrerelease": false,
+  "tagName": "v1.2.0",
+  "url": "https://github.com/worasak-tee/LOCAL-AI-CHAT-by-WR-Releases/releases/tag/v1.2.0",
+  "verified": true,
+  "verified_at": "2026-08-19T11:32:02.675571+00:00"
+}
