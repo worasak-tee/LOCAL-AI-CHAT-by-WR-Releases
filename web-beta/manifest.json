@@ -2,9 +2,10 @@
   "product": "LOCAL-AI-CHAT-by-WR-Web",
   "channel": "beta",
   "version": "2.0.0-beta3",
-  "published_at": "2026-08-20T14:25:00+07:00",
+  "published_at": "2026-08-20T15:08:00+07:00",
   "notes": [
     "เพิ่ม Software Update ในหน้า Setup สำหรับ System Administrator เท่านั้น",
+    "แก้ Updater Helper ให้ใช้ .venv-web Python และแยก process ออกจาก Windows Service",
     "เพิ่ม One-Click Update พร้อม Backup, Service Restart, Health Check และ Auto Rollback",
     "แก้ Markdown Heading/Bold/Link ให้แสดงผลถูกต้อง",
     "ปุ่ม Link ใช้ชื่อ Google รูปภาพ / Unsplash / Pexels แทนชื่อซ้ำว่า เปิดลิงก์",
@@ -24,7 +25,7 @@
     {
       "path": "webapp/update_manager.py",
       "url": "https://raw.githubusercontent.com/worasak-tee/LOCAL-AI-CHAT-by-WR-Releases/main/web-beta/2.0.0-beta3/webapp/update_manager.py",
-      "git_sha1": "a1b82bac77179c570dd063e57033de374a988234"
+      "git_sha1": "b9ff74c9336718cbf7f78625e755b33959357dc1"
     },
     {
       "path": "webapp/update_helper.py",
