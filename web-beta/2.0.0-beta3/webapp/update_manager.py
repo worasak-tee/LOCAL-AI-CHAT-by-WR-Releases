@@ -41,7 +41,7 @@ def _fetch_manifest() -> dict[str, Any]:
         raise RuntimeError("Update manifest repository is not allowed")
     request = urllib.request.Request(
         MANIFEST_URL,
-        headers={"User-Agent": "LOCAL-AI-CHAT-by-WR-Web-Updater/1.0", "Accept": "application/json"},
+        headers={"User-Agent": "LOCAL-AI-CHAT-by-WR-Web-Updater/1.1", "Accept": "application/json"},
     )
     with urllib.request.urlopen(request, timeout=15) as response:
         payload = response.read(MAX_MANIFEST_BYTES + 1)
@@ -74,8 +74,46 @@ def _write_job(path: Path, payload: dict[str, Any]) -> None:
     tmp.replace(path)
 
 
+def _helper_python(root: Path) -> Path:
+    if os.name == "nt":
+        candidate = root / ".venv-web" / "Scripts" / "python.exe"
+        if candidate.is_file():
+            return candidate
+        raise RuntimeError("Updater Python was not found: .venv-web\\Scripts\\python.exe")
+    candidate = Path(sys.executable)
+    if candidate.is_file():
+        return candidate
+    raise RuntimeError("Updater Python interpreter was not found")
+
+
+def _launch_helper(*, root: Path, helper: Path, job_file: Path, log_file: Path) -> str:
+    python_exe = _helper_python(root)
+    args = [str(python_exe), str(helper), "--job", str(job_file), "--manifest", MANIFEST_URL]
+    log_file.parent.mkdir(parents=True, exist_ok=True)
+    base_flags = 0
+    breakaway_flag = 0
+    if os.name == "nt":
+        base_flags = int(getattr(subprocess, "CREATE_NEW_PROCESS_GROUP", 0)) | int(getattr(subprocess, "DETACHED_PROCESS", 0))
+        breakaway_flag = int(getattr(subprocess, "CREATE_BREAKAWAY_FROM_JOB", 0x01000000))
+    attempts = [base_flags | breakaway_flag] if breakaway_flag else [base_flags]
+    if breakaway_flag:
+        attempts.append(base_flags)
+    last_error: Exception | None = None
+    for flags in attempts:
+        log_handle = None
+        try:
+            log_handle = open(log_file, "ab", buffering=0)
+            subprocess.Popen(args, cwd=str(root), stdin=subprocess.DEVNULL, stdout=log_handle, stderr=log_handle, close_fds=True, creationflags=flags)
+            return str(python_exe)
+        except OSError as exc:
+            last_error = exc
+        finally:
+            if log_handle is not None:
+                log_handle.close()
+    raise RuntimeError(f"Could not launch updater helper with {python_exe}: {last_error}")
+
+
 def install_update_routes(app, ctx: dict[str, Any]) -> None:
-    """Install Admin-only update routes without changing the primary app entrypoint."""
     require_session = ctx["_require_session"]
     require_csrf = ctx["_require_csrf"]
     settings = ctx["settings"]
@@ -84,7 +122,6 @@ def install_update_routes(app, ctx: dict[str, Any]) -> None:
     root = base_dir.parent
     job_dir = Path(settings.data_dir) / "update_jobs"
     helper = base_dir / "update_helper.py"
-
     managed = {"/api/update/check", "/api/update/install", "/api/update/status/{job_id}"}
     app.router.routes[:] = [route for route in app.router.routes if getattr(route, "path", None) not in managed]
 
@@ -104,15 +141,7 @@ def install_update_routes(app, ctx: dict[str, Any]) -> None:
         except Exception as exc:
             raise HTTPException(status_code=502, detail=f"Update check failed: {exc}") from exc
         latest = str(manifest.get("version") or "")
-        return {
-            "ok": True,
-            "current_version": web_version,
-            "latest_version": latest,
-            "update_available": _version_key(latest) > _version_key(web_version),
-            "channel": str(manifest.get("channel") or "beta"),
-            "published_at": str(manifest.get("published_at") or ""),
-            "notes": manifest.get("notes") if isinstance(manifest.get("notes"), list) else [],
-        }
+        return {"ok": True, "current_version": web_version, "latest_version": latest, "update_available": _version_key(latest) > _version_key(web_version), "channel": str(manifest.get("channel") or "beta"), "published_at": str(manifest.get("published_at") or ""), "notes": manifest.get("notes") if isinstance(manifest.get("notes"), list) else []}
 
     @app.post("/api/update/install")
     def update_install(request: Request):
@@ -126,38 +155,16 @@ def install_update_routes(app, ctx: dict[str, Any]) -> None:
         latest = str(manifest.get("version") or "")
         if _version_key(latest) <= _version_key(web_version):
             return {"ok": True, "started": False, "message": "Already up to date", "version": web_version}
-
         import secrets
         job_id = secrets.token_hex(10)
         job_file = job_dir / f"{job_id}.json"
         log_file = job_dir / f"{job_id}.log"
-        _write_job(job_file, {
-            "job_id": job_id,
-            "status": "queued",
-            "stage": "Queued",
-            "current_version": web_version,
-            "target_version": latest,
-            "requested_by": str(session.get("username") or "admin"),
-            "message": "Waiting for updater helper",
-        })
-
-        creationflags = 0
-        if os.name == "nt":
-            creationflags = int(getattr(subprocess, "CREATE_NEW_PROCESS_GROUP", 0)) | int(getattr(subprocess, "DETACHED_PROCESS", 0))
+        _write_job(job_file, {"job_id": job_id, "status": "queued", "stage": "Queued", "current_version": web_version, "target_version": latest, "requested_by": str(session.get("username") or "admin"), "message": "Waiting for updater helper"})
         try:
-            log_file.parent.mkdir(parents=True, exist_ok=True)
-            log_handle = open(log_file, "ab", buffering=0)
-            subprocess.Popen(
-                [sys.executable, str(helper), "--job", str(job_file), "--manifest", MANIFEST_URL],
-                cwd=str(root), stdin=subprocess.DEVNULL, stdout=log_handle, stderr=log_handle,
-                close_fds=True, creationflags=creationflags,
-            )
-            log_handle.close()
+            runtime = _launch_helper(root=root, helper=helper, job_file=job_file, log_file=log_file)
+            _write_job(job_file, {**_read_job(job_file), "status": "queued", "stage": "Helper launched", "message": "Updater helper started outside the Web service process", "runtime": runtime})
         except Exception as exc:
-            _write_job(job_file, {
-                "job_id": job_id, "status": "failed", "stage": "Launch failed",
-                "current_version": web_version, "target_version": latest, "message": str(exc),
-            })
+            _write_job(job_file, {"job_id": job_id, "status": "failed", "stage": "Launch failed", "current_version": web_version, "target_version": latest, "message": str(exc)})
             raise HTTPException(status_code=500, detail=f"Could not start updater helper: {exc}") from exc
         return {"ok": True, "started": True, "job_id": job_id, "target_version": latest}
 
