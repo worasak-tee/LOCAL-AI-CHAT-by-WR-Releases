@@ -2,12 +2,13 @@
   "product": "LOCAL-AI-CHAT-by-WR-Web",
   "channel": "beta",
   "version": "2.0.0-beta6",
-  "published_at": "2026-08-20T21:45:00+07:00",
+  "published_at": "2026-08-20T23:18:00+07:00",
   "notes": [
-    "แก้ต้นเหตุ Extension bootstrap หลุด: Windows Service และ run_web จะติดตั้ง Update/Attachment routes ทุกครั้งก่อน Uvicorn start",
-    "คง canonical ASGI entrypoint เป็น webapp.main:app ไม่กลับไปใช้ bootstrap:app",
-    "เพิ่ม /health/extensions เพื่อตรวจว่า Software Update และ Full Attachment backend ถูก mount จริง",
-    "คืน Software Update สำหรับ Onsite role=admin และคืน /api/attachments/stage, commit, preview",
+    "แก้ KeyError CHAT_FILES_DIR บนเครื่องที่ main.py รุ่นเดิมไม่ได้ export path นี้",
+    "ย้าย Extension bootstrap ไปที่ runtime_extensions.py และเรียกจาก Windows Service / run_web ก่อน Uvicorn start",
+    "คง canonical ASGI entrypoint เป็น webapp.main:app",
+    "เพิ่ม /health/extensions เพื่อตรวจ Software Update และ Full Attachment backend จริง",
+    "คืน Software Update สำหรับ Onsite role=admin และคืน Attachment stage/commit/preview routes",
     "คง Full Attachment: ทุกชนิดไฟล์, ZIP, Copy/Paste, Drag & Drop, Preview ก่อนส่ง และ View + Download หลังส่ง",
     "ไม่แตะ webapp/data, Chat History, Setup, Secret, Report หรือ .venv-web"
   ],
@@ -34,8 +35,8 @@
     },
     {
       "path": "webapp/update_manager.py",
-      "url": "https://raw.githubusercontent.com/worasak-tee/LOCAL-AI-CHAT-by-WR-Releases/main/web-beta/2.0.0-beta4/webapp/update_manager.py",
-      "git_sha1": "45bdea82eb56ca69d1bd1a908764e7b9e25912fe"
+      "url": "https://raw.githubusercontent.com/worasak-tee/LOCAL-AI-CHAT-by-WR-Releases/main/web-beta/2.0.0-beta6/webapp/update_manager.py",
+      "git_sha1": "0a7e467ade68b4bbf51ebdc323179d76733556da"
     },
     {
       "path": "webapp/update_helper.py",
