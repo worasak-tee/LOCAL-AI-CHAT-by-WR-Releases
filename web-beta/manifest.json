@@ -1,25 +1,66 @@
 {
   "product": "LOCAL-AI-CHAT-by-WR-Web",
   "channel": "beta",
-  "version": "2.0.0-beta5",
-  "published_at": "2026-08-20T17:35:00+07:00",
+  "version": "2.0.0-beta6",
+  "published_at": "2026-08-20T21:45:00+07:00",
   "notes": [
-    "แก้ Attachment UI Loader: ปุ่มแนบไฟล์และ Voice ต้องกลับมาแสดงในหน้า Chat",
-    "เพิ่ม Self-healing loader บังคับโหลด app-tools.js ด้วย Version URL ใหม่ ไม่ใช้ Browser cache เก่า",
-    "แก้ Copy/Paste และ Drag & Drop ให้ Full Attachment script ถูกโหลดและจับ event ในหน้า Chat",
-    "คง Full Attachment Beta 4: ทุกชนิดไฟล์, ZIP, Preview ก่อนส่ง, View + Download หลังส่ง",
-    "Hotfix นี้เปลี่ยนเพียง Version และ app-auth.js ไม่แตะ Chat History, Setup, Secret, Report หรือ Windows Service entrypoint"
+    "แก้ต้นเหตุ Extension bootstrap หลุด: Windows Service และ run_web จะติดตั้ง Update/Attachment routes ทุกครั้งก่อน Uvicorn start",
+    "คง canonical ASGI entrypoint เป็น webapp.main:app ไม่กลับไปใช้ bootstrap:app",
+    "เพิ่ม /health/extensions เพื่อตรวจว่า Software Update และ Full Attachment backend ถูก mount จริง",
+    "คืน Software Update สำหรับ Onsite role=admin และคืน /api/attachments/stage, commit, preview",
+    "คง Full Attachment: ทุกชนิดไฟล์, ZIP, Copy/Paste, Drag & Drop, Preview ก่อนส่ง และ View + Download หลังส่ง",
+    "ไม่แตะ webapp/data, Chat History, Setup, Secret, Report หรือ .venv-web"
   ],
   "files": [
     {
       "path": "webapp/__init__.py",
-      "url": "https://raw.githubusercontent.com/worasak-tee/LOCAL-AI-CHAT-by-WR-Releases/main/web-beta/2.0.0-beta5/webapp/__init__.py",
-      "git_sha1": "aa74fffc7ab698028d60fdc3c238b44de6554940"
+      "url": "https://raw.githubusercontent.com/worasak-tee/LOCAL-AI-CHAT-by-WR-Releases/main/web-beta/2.0.0-beta6/webapp/__init__.py",
+      "git_sha1": "80da3e7c5063b13c5876bb9526f9dcf38f0e7bc6"
+    },
+    {
+      "path": "webapp/runtime_extensions.py",
+      "url": "https://raw.githubusercontent.com/worasak-tee/LOCAL-AI-CHAT-by-WR-Releases/main/web-beta/2.0.0-beta6/webapp/runtime_extensions.py",
+      "git_sha1": "b1a4470507c5da21503a245685fcf08c3e8c4a81"
+    },
+    {
+      "path": "webapp/windows_service.py",
+      "url": "https://raw.githubusercontent.com/worasak-tee/LOCAL-AI-CHAT-by-WR-Releases/main/web-beta/2.0.0-beta6/webapp/windows_service.py",
+      "git_sha1": "d83c3c41f357e746dce1923524c9a9be46c7c66d"
+    },
+    {
+      "path": "webapp/run_web.py",
+      "url": "https://raw.githubusercontent.com/worasak-tee/LOCAL-AI-CHAT-by-WR-Releases/main/web-beta/2.0.0-beta6/webapp/run_web.py",
+      "git_sha1": "49a8267c46bcc2f0a6a9cf3f31a98f9497d5c5c2"
+    },
+    {
+      "path": "webapp/update_manager.py",
+      "url": "https://raw.githubusercontent.com/worasak-tee/LOCAL-AI-CHAT-by-WR-Releases/main/web-beta/2.0.0-beta4/webapp/update_manager.py",
+      "git_sha1": "45bdea82eb56ca69d1bd1a908764e7b9e25912fe"
+    },
+    {
+      "path": "webapp/update_helper.py",
+      "url": "https://raw.githubusercontent.com/worasak-tee/LOCAL-AI-CHAT-by-WR-Releases/main/web-beta/2.0.0-beta3/webapp/update_helper.py",
+      "git_sha1": "205c16096d84a9af505c11169543031c8da0af82"
+    },
+    {
+      "path": "webapp/attachment_extension.py",
+      "url": "https://raw.githubusercontent.com/worasak-tee/LOCAL-AI-CHAT-by-WR-Releases/main/web-beta/2.0.0-beta4/webapp/attachment_extension.py",
+      "git_sha1": "3789ae990cc932a823d62340f06aa8b49ac1f549"
+    },
+    {
+      "path": "webapp/static/app-tools.js",
+      "url": "https://raw.githubusercontent.com/worasak-tee/LOCAL-AI-CHAT-by-WR-Releases/main/web-beta/2.0.0-beta4/webapp/static/app-tools.js",
+      "git_sha1": "b07902ca6a244f4e4f2397b4283916697d418098"
     },
     {
       "path": "webapp/static/app-auth.js",
       "url": "https://raw.githubusercontent.com/worasak-tee/LOCAL-AI-CHAT-by-WR-Releases/main/web-beta/2.0.0-beta5/webapp/static/app-auth.js",
       "git_sha1": "d04f28cba9b7ab91e82bc8e01ccbce8863c860f9"
+    },
+    {
+      "path": "webapp/static/app-update.js",
+      "url": "https://raw.githubusercontent.com/worasak-tee/LOCAL-AI-CHAT-by-WR-Releases/main/web-beta/2.0.0-beta3/webapp/static/app-update.js",
+      "git_sha1": "211b7f93ada8018ad66f9f6bbd10633d99a48a6c"
     }
   ]
 }
