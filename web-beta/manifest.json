@@ -1,38 +1,25 @@
 {
   "product": "LOCAL-AI-CHAT-by-WR-Web",
   "channel": "beta",
-  "version": "2.0.0-beta4",
-  "published_at": "2026-08-20T15:22:00+07:00",
+  "version": "2.0.0-beta5",
+  "published_at": "2026-08-20T17:35:00+07:00",
   "notes": [
-    "Full Attachment: แนบไฟล์ทุกชนิด รวม ZIP ได้สูงสุด 5 ไฟล์ต่อข้อความ",
-    "รองรับ Copy/Paste รูปหรือไฟล์จาก Clipboard และ Drag & Drop ลงหน้า Chat",
-    "เพิ่ม Preview ก่อนส่งสำหรับรูป PDF Text Audio Video และ ZIP Contents",
-    "ไฟล์ชนิดที่ Browser preview ไม่ได้จะแสดงชื่อ ชนิด และขนาดอย่างปลอดภัย",
-    "หลังส่งไฟล์มีปุ่ม View + Download และเปิดดูย้อนหลังจาก Chat History ได้",
-    "รองรับส่งไฟล์อย่างเดียวโดยไม่ต้องพิมพ์ข้อความ",
-    "จำกัด 50 MB ต่อไฟล์ และรวม 100 MB ต่อการแนบหนึ่งครั้งเพื่อป้องกัน Browser/Server ค้าง",
-    "คง Admin-only One-Click Update, Rename Chat, Profile Photo และ Google Maps/Link renderer"
+    "แก้ Attachment UI Loader: ปุ่มแนบไฟล์และ Voice ต้องกลับมาแสดงในหน้า Chat",
+    "เพิ่ม Self-healing loader บังคับโหลด app-tools.js ด้วย Version URL ใหม่ ไม่ใช้ Browser cache เก่า",
+    "แก้ Copy/Paste และ Drag & Drop ให้ Full Attachment script ถูกโหลดและจับ event ในหน้า Chat",
+    "คง Full Attachment Beta 4: ทุกชนิดไฟล์, ZIP, Preview ก่อนส่ง, View + Download หลังส่ง",
+    "Hotfix นี้เปลี่ยนเพียง Version และ app-auth.js ไม่แตะ Chat History, Setup, Secret, Report หรือ Windows Service entrypoint"
   ],
   "files": [
     {
       "path": "webapp/__init__.py",
-      "url": "https://raw.githubusercontent.com/worasak-tee/LOCAL-AI-CHAT-by-WR-Releases/main/web-beta/2.0.0-beta4/webapp/__init__.py",
-      "git_sha1": "2e1e86737e4c9360938416bd36759a4382139e20"
+      "url": "https://raw.githubusercontent.com/worasak-tee/LOCAL-AI-CHAT-by-WR-Releases/main/web-beta/2.0.0-beta5/webapp/__init__.py",
+      "git_sha1": "aa74fffc7ab698028d60fdc3c238b44de6554940"
     },
     {
-      "path": "webapp/attachment_extension.py",
-      "url": "https://raw.githubusercontent.com/worasak-tee/LOCAL-AI-CHAT-by-WR-Releases/main/web-beta/2.0.0-beta4/webapp/attachment_extension.py",
-      "git_sha1": "3789ae990cc932a823d62340f06aa8b49ac1f549"
-    },
-    {
-      "path": "webapp/update_manager.py",
-      "url": "https://raw.githubusercontent.com/worasak-tee/LOCAL-AI-CHAT-by-WR-Releases/main/web-beta/2.0.0-beta4/webapp/update_manager.py",
-      "git_sha1": "45bdea82eb56ca69d1bd1a908764e7b9e25912fe"
-    },
-    {
-      "path": "webapp/static/app-tools.js",
-      "url": "https://raw.githubusercontent.com/worasak-tee/LOCAL-AI-CHAT-by-WR-Releases/main/web-beta/2.0.0-beta4/webapp/static/app-tools.js",
-      "git_sha1": "b07902ca6a244f4e4f2397b4283916697d418098"
+      "path": "webapp/static/app-auth.js",
+      "url": "https://raw.githubusercontent.com/worasak-tee/LOCAL-AI-CHAT-by-WR-Releases/main/web-beta/2.0.0-beta5/webapp/static/app-auth.js",
+      "git_sha1": "d04f28cba9b7ab91e82bc8e01ccbce8863c860f9"
     }
   ]
 }
